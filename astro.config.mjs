@@ -1,18 +1,40 @@
-import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import react from "@astrojs/react";
-import netlify from "@astrojs/netlify";
-// import vercelServerless from "@astrojs/vercel/serverless";
-//import vercel from "@astrojs/vercel/serverless";
+import icon from "astro-icon";
+import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react()],
- // output: "server",
- output: "server", // Ensures a static build for deployment
- build: {
-   outDir: "dist" // Explicitly sets output to 'dist'
- },
- adapter: netlify(),
- // adapter: vercel(),
+	vite: {
+		server: {
+			watch: {
+				usePolling: true,
+			},
+		},
+	},
+	site: "https://mintaka.co",
+	i18n: {
+		defaultLocale: "en",
+		locales: ["en", "it"],
+	},
+	markdown: {
+		drafts: true,
+		shikiConfig: {
+			theme: "css-variables",
+		},
+	},
+	shikiConfig: {
+		wrap: true,
+		skipInline: false,
+		drafts: true,
+	},
+	integrations: [
+		tailwind({
+			applyBaseStyles: false,
+		}),
+		sitemap(),
+		mdx(),
+		icon(),
+	],
 });
